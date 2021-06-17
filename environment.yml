@@ -1,0 +1,15 @@
+name: stats-studies
+channels:
+  - conda-forge
+dependencies:
+  - numpy
+  - pandas 
+  - jupyterlab
+  - boost-histogram
+  - scipy
+  - matplotlib
+  - numba-stats
+  - pyhf
+  - hepstats
+  - root
+  - zfit
