@@ -13,3 +13,4 @@ dependencies:
   - hepstats
   - root
   - zfit
+  - numba-scipy
