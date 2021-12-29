@@ -1,0 +1,208 @@
+{
+    "channels": [
+        {
+            "name": "signal_region",
+            "samples": [
+                {
+                    "data": [
+                        4.43803
+                    ],
+                    "modifiers": [
+                        {
+                            "data": {
+                                "hi": 1.02,
+                                "lo": 0.9803921568627451
+                            },
+                            "name": "CMS_eff_b",
+                            "type": "normsys"
+                        },
+                        {
+                            "data": {
+                                "hi": 1.12,
+                                "lo": 0.8928571428571428
+                            },
+                            "name": "CMS_eff_t",
+                            "type": "normsys"
+                        },
+                        {
+                            "data": {
+                                "hi": 1.1,
+                                "lo": 0.9090909090909091
+                            },
+                            "name": "CMS_eff_t_highpt",
+                            "type": "normsys"
+                        },
+                        {
+                            "data": {
+                                "hi": 1.005,
+                                "lo": 0.9950248756218907
+                            },
+                            "name": "acceptance_ttbar",
+                            "type": "normsys"
+                        },
+                        {
+                            "data": null,
+                            "name": "r",
+                            "type": "normfactor"
+                        }
+                    ],
+                    "name": "ttbar"
+                },
+                {
+                    "data": [
+                        3.18309
+                    ],
+                    "modifiers": [
+                        {
+                            "data": {
+                                "hi": 1.02,
+                                "lo": 0.9803921568627451
+                            },
+                            "name": "CMS_eff_b",
+                            "type": "normsys"
+                        },
+                        {
+                            "data": {
+                                "hi": 1.12,
+                                "lo": 0.8928571428571428
+                            },
+                            "name": "CMS_eff_t",
+                            "type": "normsys"
+                        },
+                        {
+                            "data": {
+                                "hi": 1.1,
+                                "lo": 0.9090909090909091
+                            },
+                            "name": "CMS_eff_t_highpt",
+                            "type": "normsys"
+                        },
+                        {
+                            "data": {
+                                "hi": 1.05,
+                                "lo": 0.9523809523809523
+                            },
+                            "name": "xsec_diboson",
+                            "type": "normsys"
+                        }
+                    ],
+                    "name": "diboson"
+                },
+                {
+                    "data": [
+                        3.7804
+                    ],
+                    "modifiers": [
+                        {
+                            "data": {
+                                "hi": 1.02,
+                                "lo": 0.9803921568627451
+                            },
+                            "name": "CMS_eff_b",
+                            "type": "normsys"
+                        },
+                        {
+                            "data": {
+                                "hi": 1.12,
+                                "lo": 0.8928571428571428
+                            },
+                            "name": "CMS_eff_t",
+                            "type": "normsys"
+                        },
+                        {
+                            "data": {
+                                "hi": 1.1,
+                                "lo": 0.9090909090909091
+                            },
+                            "name": "CMS_eff_t_highpt",
+                            "type": "normsys"
+                        },
+                        {
+                            "data": {
+                                "hi": 1.08,
+                                "lo": 0.9259259259259258
+                            },
+                            "name": "acceptance_Ztautau",
+                            "type": "normsys"
+                        }
+                    ],
+                    "name": "Ztautau"
+                },
+                {
+                    "data": [
+                        1.63396
+                    ],
+                    "modifiers": [
+                        {
+                            "data": {
+                                "hi": 1.2,
+                                "lo": 0.8333333333333334
+                            },
+                            "name": "norm_jetFakes",
+                            "type": "normsys"
+                        }
+                    ],
+                    "name": "jetFakes"
+                },
+                {
+                    "data": [
+                        0.711064
+                    ],
+                    "modifiers": [
+                        {
+                            "data": {
+                                "hi": 1.02,
+                                "lo": 0.9803921568627451
+                            },
+                            "name": "CMS_eff_b",
+                            "type": "normsys"
+                        },
+                        {
+                            "data": {
+                                "hi": 1.12,
+                                "lo": 0.8928571428571428
+                            },
+                            "name": "CMS_eff_t",
+                            "type": "normsys"
+                        },
+                        {
+                            "data": {
+                                "hi": 1.1,
+                                "lo": 0.9090909090909091
+                            },
+                            "name": "CMS_eff_t_highpt",
+                            "type": "normsys"
+                        },
+                        {
+                            "data": {
+                                "hi": 1.05,
+                                "lo": 0.9523809523809523
+                            },
+                            "name": "acceptance_bbH",
+                            "type": "normsys"
+                        }
+                    ],
+                    "name": "bbHtautau"
+                }
+            ]
+        }
+    ],
+    "measurements": [
+        {
+            "config": {
+                "parameters": [],
+                "poi": "r"
+            },
+            "name": "meas"
+        }
+    ],
+    "observations": [
+        {
+            "data": [
+                10.0
+            ],
+            "name": "signal_region"
+        }
+    ],
+    "version": "1.0.0"
+}
