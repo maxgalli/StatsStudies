@@ -33,7 +33,7 @@ def plot_scan(arr, ax, color, label=None):
     ax.set_xlabel("$xs \psi(2S)$")
     ax.set_ylabel("-2$\Delta$lnL")
     ax.set_ylim(0, 10)
-    ax.set_xlim(5, 20)
+    ax.set_xlim(5, 18)
     ax.axhline(1.0, color="k", linestyle="--")
    
     return ax
