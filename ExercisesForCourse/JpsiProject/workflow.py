@@ -91,6 +91,7 @@ def main():
     ax.legend()
     plt.savefig("images/Exercise0_data.png")
     ax.plot(x, data.shape[0] / n_bins * (6 - 2) * model.pdf(x), label="Model", color="red")
+    ax.legend()
     plt.savefig("images/Exercise0.png")
 
     # Exercise 2
