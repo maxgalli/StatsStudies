@@ -1,5 +1,6 @@
 # StatsStudies
-Statistics studies and exercises based on Mauro's lectures
+Statistics studies and exercises based on Mauro's lectures and HEP stuff in
+general.
 
 ## Setup
 
