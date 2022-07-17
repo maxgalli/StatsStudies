@@ -1,3 +1,4 @@
+from turtle import color
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -10,13 +11,37 @@ from hepstats.hypotests.calculators import AsymptoticCalculator
 from hepstats.hypotests.calculators import FrequentistCalculator
 from utils_zfit import plotlimit
 from scipy import interpolate
+import mplhep as hep
 
-plt.rcParams['figure.figsize'] = (10, 10)
+hep.style.use("CMS")
+
+
+def plot_scan(arr, ax, color, label=None):
+    ax.plot(arr[0], arr[1], color=color, label=label)
+    minimum = arr[:, np.argmin(arr[1])]
+    level = 1.0
+    level = minimum[1] + level
+    level_arr = np.ones(len(arr[1])) * level
+    # Get index of the two points in poi_values where the NLL crosses the horizontal line at 1
+    indices = np.argwhere(
+        np.diff(np.sign(arr[1] - level_arr))
+    ).flatten()
+    points = [arr[:, i] for i in indices]
+    for point in points:
+        ax.plot([point[0], point[0]], [minimum[1], point[1]], color="k", linestyle="--")
+ 
+    ax.set_xlabel("$xs \psi(2S)$")
+    ax.set_ylabel("-2$\Delta$lnL")
+    ax.set_ylim(0, 10)
+    ax.set_xlim(5, 20)
+    ax.axhline(1.0, color="k", linestyle="--")
+   
+    return ax
 
 
 def main():
     # Exercise 0
-    print("Exercise 0")
+    print("Exercise 0: fit lower statistics sample")
     data = pkl.load(open("DataSet_lowstat.pkl", "rb"))
     mass = zfit.Space("mass", (2, 6))
     zdata = zfit.Data.from_numpy(obs=mass, array=data)
@@ -24,11 +49,9 @@ def main():
     mean_jpsi = zfit.Parameter("mean_jpsi", 3.1, 2.8, 3.4)
     sigma_jpsi = zfit.Parameter("sigma_jpsi", 0.3, 0.0001, 1.)
     alpha_jpsi = zfit.Parameter("alpha_jpsi", 1.5, -5., 5.)
-    #n_jpsi = zfit.Parameter("n_jpsi", 1.5, 0.5, 5.)
     n_jpsi = zfit.Parameter("n_jpsi", 1.5, 0.5, 10.)
     pdf_jpsi = zfit.pdf.CrystalBall(mu=mean_jpsi, sigma=sigma_jpsi, alpha=alpha_jpsi, n=n_jpsi, obs=mass)
 
-    #mean_psi2s = zfit.Parameter("mean_psi2s", 3.7, 3.2, 3.95)
     mean_psi2s = zfit.Parameter("mean_psi2s", 3.7, 2.5, 3.95)
     pdf_psi2s = zfit.pdf.CrystalBall(mu=mean_psi2s, sigma=sigma_jpsi, alpha=alpha_jpsi, n=n_jpsi, obs=mass)
 
@@ -59,14 +82,16 @@ def main():
     n_bins = 100
     bins, edges = np.histogram(data, bins=n_bins)
     centers = (edges[:-1] + edges[1:]) / 2
-    fig, ax = plt.subplots(1, 1, figsize=(10, 10))
+    fig, ax = plt.subplots()
     ax.errorbar(centers, bins, yerr=np.sqrt(bins), fmt='o', label="Data", color="black")
     x = np.linspace(2, 6, 1000)
-    ax.plot(x, data.shape[0] / n_bins * (6 - 2) * model.pdf(x), label="Model", color="red")
     ax.set_xlabel("$m_{\mu\mu}$ [GeV]")
-    ax.set_ylabel("Events")
+    ax.set_ylabel("Events / [{} GeV]".format((6 - 2) / n_bins))
+    ax.set_ylim(0, 80)
     ax.legend()
-    plt.savefig("Exercise0.png")
+    plt.savefig("images/Exercise0_data.png")
+    ax.plot(x, data.shape[0] / n_bins * (6 - 2) * model.pdf(x), label="Model", color="red")
+    plt.savefig("images/Exercise0.png")
 
     # Exercise 2
     print("Exercise 2: significance")
@@ -86,12 +111,13 @@ def main():
     ul = UpperLimit(calculator=calculator, poinull=sig_yield_scan, poialt=bkg_only)
     ul.upperlimit(alpha=0.05)
 
-    fig, ax = plt.subplots(1, 1, figsize=(10, 10))
+    fig, ax = plt.subplots()
     ax = plotlimit(ul, CLs=False)
-    plt.savefig("Exercise3.png")
+    ax.set_xlabel("$xs \psi(2S)$")
+    plt.savefig("images/Exercise3.png")
 
     # Exercise 4
-    print("Exercise 4")
+    print("Exercise 4: higher statistics sample")
     data = pkl.load(open("DataSet.pkl", "rb"))
     zdata = zfit.Data.from_numpy(obs=mass, array=data)
 
@@ -104,13 +130,10 @@ def main():
     x = []
     y = []
     for poi in np.linspace(0, 40, 10):
-        #print(denominator)
         cross_psi2s.set_value(poi)
         cross_psi2s.floating = False
         result_scan = minimizer.minimize(nll)
         numerator = result_scan.loss.value().numpy()
-        #print(numerator)
-        #print(result_scan)
         twonll = 2 * (numerator - denominator)
         x.append(poi)
         y.append(twonll)
@@ -125,13 +148,11 @@ def main():
     y_interp = func(x_interp)
     y_interp = y_interp - np.min(y_interp)
     arr = np.array([x_interp, y_interp])
-    arr = arr[:, arr[1] < 10]
+    #arr = arr[:, arr[1] < 10]
     
-    fig, ax = plt.subplots(1, 1, figsize=(10, 10))
-    ax.plot(arr[0], arr[1])
-    ax.set_xlabel("xs_psi2s")
-    ax.set_ylabel("-2*log(L)")
-    plt.savefig("Exercise4.png")
+    fig, ax = plt.subplots()
+    ax = plot_scan(arr, ax, color="black")
+    plt.savefig("images/Exercise4.png")
 
     # Exercise 5
     print("Exercise 5: add systematic uncertainty")
@@ -151,13 +172,10 @@ def main():
     x_mod = []
     y_mod = []
     for poi in np.linspace(0, 40, 10):
-        #print(denominator)
         cross_psi2s.set_value(poi)
         cross_psi2s.floating = False
         result_scan = minimizer.minimize(nll)
         numerator = result_scan.loss.value().numpy()
-        #print(numerator)
-        #print(result_scan)
         twonll = 2 * (numerator - denominator)
         x_mod.append(poi)
         y_mod.append(twonll)
@@ -171,14 +189,13 @@ def main():
     y_mod_interp = func_mod(x_mod_interp)
     y_mod_interp = y_mod_interp - np.min(y_mod_interp)
     arr_mod = np.array([x_mod_interp, y_mod_interp])
-    arr_mod = arr_mod[:, arr_mod[1] < 10]
+    #arr_mod = arr_mod[:, arr_mod[1] < 10]
     
-    fig, ax = plt.subplots(1, 1, figsize=(10, 10))
-    ax.plot(arr[0], arr[1], color="black")
-    ax.plot(arr_mod[0], arr_mod[1], color="red")
-    ax.set_xlabel("xs_psi2s")
-    ax.set_ylabel("-2*log(L)")
-    plt.savefig("Exercise5.png")
+    fig, ax = plt.subplots()
+    ax = plot_scan(arr, ax, color="black", label="Without systematic uncertainty")
+    ax = plot_scan(arr_mod, ax, color="red", label="With systematic uncertainty")
+    ax.legend()
+    plt.savefig("images/Exercise5.png")
 
 
 if __name__ == '__main__':
