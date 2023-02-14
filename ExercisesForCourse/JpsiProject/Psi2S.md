@@ -8,7 +8,7 @@ This is what the distribution of the dimuon invariant mass spectrum looks like w
 
 The J/ψ is of course very visible around the 3.1 GeV mass point, while for the ψ(2S) we expect to see an excess around 3.65 GeV.
 
-The tasks in what follows will have the referenced as **M** if they are mandatory for the project and **A** if they are advanced. Read carefully the **entire** guide before starting.
+The tasks in what follows will be referenced to as **M** if they are mandatory for the project and **A** if they are advanced. Read carefully the **entire** guide before starting.
 
 ## Datasets
 
