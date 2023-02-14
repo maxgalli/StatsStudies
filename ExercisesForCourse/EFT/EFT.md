@@ -37,13 +37,13 @@ the signal strength in a certain bin $i$ for a Higgs boson decaying in a certain
 $$\mu^{X}_{i}(c_{j}) =  \frac{\sigma_{SMEFT}(gg \rightarrow H)}{\sigma_{SM}(gg \rightarrow H)} \cdot \frac{\Gamma^{H \rightarrow X}_{SMEFT} / \Gamma^{H \rightarrow X}_{SM}}{\Gamma^{H}_{SMEFT} / \Gamma^{H}_{SM}}$$
 
 where we distinguish the three main parts:
-- production: $\frac{\sigma_{SMEFT}(gg \rightarrow H)}{\sigma_{SM}(gg \rightarrow H)} = 1+\sum_{j} A_{j}^{gg \rightarrow H} c_{j}+\sum_{j k} B_{j k}^{gg \rightarrow H} c_{j} c_{k}$
+- production: $\frac{\sigma_{SMEFT}(gg \rightarrow H)}{\sigma_{SM}(gg \rightarrow H)} = 1+\sum_{j} A_{j}^{gg \rightarrow H} c_{j}+\sum_{j k} B_{j k}^{gg \rightarrow H} c_{j} c_{k}$ (*)
 
 - decay to $X$: 
-$\frac{\Gamma^{H \rightarrow X}_{SMEFT}}{\Gamma^{H \rightarrow X}_{SM}} = 1+\sum_{j} A_{j}^{H \rightarrow X} c_{j}+\sum_{j k} B_{j k}^{H \rightarrow X} c_{j} c_{k}$
+$\frac{\Gamma^{H \rightarrow X}_{SMEFT}}{\Gamma^{H \rightarrow X}_{SM}} = 1+\sum_{j} A_{j}^{H \rightarrow X} c_{j}+\sum_{j k} B_{j k}^{H \rightarrow X} c_{j} c_{k}$ (\*\*)
 
 - total decay: 
-$\frac{\Gamma^{H}_{SMEFT}}{\Gamma^{H}_{SM}} = 1+\sum_{j} A_{j}^{H} c_{j}+\sum_{j k} B_{j k}^{H} c_{j} c_{k}$
+$\frac{\Gamma^{H}_{SMEFT}}{\Gamma^{H}_{SM}} = 1+\sum_{j} A_{j}^{H} c_{j}+\sum_{j k} B_{j k}^{H} c_{j} c_{k}$ (\*\*\*)
 
 As explained in the next section, the coefficients $A$ and $B$ (respectively linear and quadratic) that define the function in each bin will be given you as input for your project.
 
@@ -108,3 +108,22 @@ These files contain a *JSON-ized* version of the correlation matrices obtained w
 contains the correlations between ```r_smH_PTH_0_10``` and itself (clearly 1), ```r_smH_PTH_0_10``` and ```r_smH_PTH_10_20``` (-0.05706247229485781), etc.
 
 You will notice that you have been provided with files for **three decay channels** (Hgg, HZZ and HWW) and only **one observable** (ptH).
+
+### EFTPredictions
+
+```
+.
+├── decay.json
+├── ggH_HWW_ptH.json
+├── ggH_HZZ_ptH.json
+└── ggH_Hgg_ptH.json
+```
+
+These files contain the parametrizations of each bin, partial and total decay width. The files ```ggH_<decay channel>_ptH.json``` refer to the gluon fusion production part (*) and contain dictionaries where the keys are the $\mu$ of the different bins. The keys in each subdictionary have the following format:
+- ```A_<WC>```: linear term 
+- ```B_<WC>_2```: quadratic term
+- ```B_<WC1>_<WC2>```: mixed term
+
+The keys starting with "u" refer to the uncertainites of the coefficients, but they won't be used.
+
+The file ```decay.json``` is a dictionary containing only four subdictionaries: three whose keys are Hgg, HZZ and HWW, referring to the partial decay width (\*\*) and one with key ```tot``` referring to the total decay width (\*\*\*).
