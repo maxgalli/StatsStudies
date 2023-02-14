@@ -29,12 +29,18 @@ As it is clear from the equations, WCs different from 0 might represent a hint o
 But how can we investigate this behavior using differential cross section measurements? Values of WCs different from 0 change the **number of signal events** that we see in each bin of a differential cross section measurement. More clearly, we can say that the **signal strength** $\mu = \sigma / \sigma_{SM}$ in each bin of a certain differential cross section measurement **is a function of the WCs**, i.e. $\mu = \mu(\vec{c})$.
 
 Using the **narrow width approximation**:
+
 $$\sigma(gg\rightarrow H \rightarrow X) = \sigma(gg \rightarrow H) \cdot \mathrm{BR}(H\rightarrow X) = \sigma(gg \rightarrow H) \cdot \frac{\Gamma^{H \rightarrow X}}{\Gamma^{\mathrm{tot}}}$$
+
 the signal strength in a certain bin $i$ for a Higgs boson decaying in a certain way $X$ can be written as:
+
 $$\mu^{X}_{i}(c_{j}) =  \frac{\sigma_{SMEFT}(gg \rightarrow H)}{\sigma_{SM}(gg \rightarrow H)} \cdot \frac{\Gamma^{H \rightarrow X}_{SMEFT} / \Gamma^{H \rightarrow X}_{SM}}{\Gamma^{H}_{SMEFT} / \Gamma^{H}_{SM}}$$
+
 where we distinguish the three main parts:
 - production: $\frac{\sigma_{SMEFT}(gg \rightarrow H)}{\sigma_{SM}(gg \rightarrow H)} = 1+\sum_{j} A_{j}^{gg \rightarrow H} c_{j}+\sum_{j k} B_{j k}^{gg \rightarrow H} c_{j} c_{k}$
+
 - decay to $X$: $\frac{\Gamma^{H \rightarrow X}_{SMEFT}}{\Gamma^{H \rightarrow X}_{SM}} = 1+\sum_{j} A_{j}^{H \rightarrow X} c_{j}+\sum_{j k} B_{j k}^{H \rightarrow X} c_{j} c_{k}$
+
 - total decay: $\frac{\Gamma^{H}_{SMEFT}}{\Gamma^{H}_{SM}} = 1+\sum_{j} A_{j}^{H} c_{j}+\sum_{j k} B_{j k}^{H} c_{j} c_{k}$
 
 As explained in the next section, the coefficients $A$ and $B$ (respectively linear and quadratic) that define the function in each bin will be given you as input for your project.
