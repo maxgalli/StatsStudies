@@ -1,6 +1,6 @@
 # Effective Field Theories Fits using Differential Cross Sections Measurements
 
-In this project you will use differential cross sections measurements from real CMS analyses and Effective Field Theory predictions to set constraints on parameters that describe physics beyond the Standard Model.
+In this project you will use differential cross sections measurements from a real CMS analysis and Effective Field Theory predictions to set constraints on parameters that describe physics beyond the Standard Model.
 
 The tasks in what follows will be referenced to as **M** if they are mandatory for the project and **A** if they are advanced. Read carefully the **entire** guide before starting.
 
@@ -49,17 +49,12 @@ As explained in the next section, the coefficients $A$ and $B$ (respectively lin
 
 ## Input files
 
-```DiffXS``` and ```EFTPredictions``` contain the inputs for your project. In the rest of this section we describe format and content of both.
+```DiffXS``` and ```EFTPredictions``` contain the inputs for your project, referring to differential cross section measurements and EFT predictions for the $p_T^H$ observable in the $H \rightarrow \gamma \gamma$ decay channel. In the rest of this section we describe format and content of both.
 
 ### DiffXS
+
 ```
 .
-├── HWW_pTH_correlation_matrix_expected.json
-├── HWW_pTH_correlation_matrix_observed.json
-├── HWW_ptH_mus.json
-├── HZZ_pTH_correlation_matrix_expected.json
-├── HZZ_ptH_correlation_matrix_observed.json
-├── HZZ_ptH_mus.json
 ├── Hgg_ptH_correlation_matrix_expected.json
 ├── Hgg_ptH_correlation_matrix_observed.json
 └── Hgg_ptH_mus.json
@@ -67,7 +62,7 @@ As explained in the next section, the coefficients $A$ and $B$ (respectively lin
 
 This directory contains two types of JSON files:
 
-1. ```<decay channel>_<observable>_mus.json```
+1. ```Hgg_ptH_mus.json```
 
 These files contains a dictionary of elements like e.g.
 ```
@@ -79,7 +74,7 @@ These files contains a dictionary of elements like e.g.
         "Down01SigmaExp": 0.4320067145959119
     },
 ```
-where each key refers to a bin (in this case between 0 and 5 GeV) of a certain ```<observable>``` (in this case Higgs pt). The keys of the dictionary refer to:
+where each key refers to a bin (in this case between 0 and 5 GeV) in $p_T^H$. The keys of the dictionary refer to:
 
 - ```bestfit```: the best fit found for the value of $\mu$ in this bin using **observed** data
 - ```Up01Sigma```: up uncertainty on the **observed** value of $\mu$ at 68\% CL
@@ -89,9 +84,9 @@ where each key refers to a bin (in this case between 0 and 5 GeV) of a certain `
 
 As you have seen (or will see) during the lectures, the expected results have been produced using the *Asimov datasets*, and represent what we would see if the data that we have were produced according to the SM. Now you might wonder, why there is no ```bestfitExp``` in the dictionary? Following the definition of $\mu = \sigma/\sigma_{SM}$, the expected value of $\mu$ is always 1.
 
-2. ```<decay channel>_<observable>_correlation_matrix_<expected/observable>.json```
+2. ```Hgg_ptH_correlation_matrix_<expected/observable>.json```
 
-These files contain a *JSON-ized* version of the correlation matrices obtained when performing a combined fit of the signal strengths in all the bins of a certain ```<observable>```. For instance, a dictionary like the following:
+These files contain a *JSON-ized* version of the correlation matrices obtained when performing a combined fit of the signal strengths in all the $p_T^H$ bins. For instance, a dictionary like the following:
 ```
     "r_smH_PTH_0_10": {
         "r_smH_PTH_0_10": 1.0,
@@ -107,40 +102,35 @@ These files contain a *JSON-ized* version of the correlation matrices obtained w
 ```
 contains the correlations between ```r_smH_PTH_0_10``` and itself (clearly 1), ```r_smH_PTH_0_10``` and ```r_smH_PTH_10_20``` (-0.05706247229485781), etc.
 
-You will notice that you have been provided with files for **three decay channels** (Hgg, HZZ and HWW) and only **one observable** (ptH).
-
 ### EFTPredictions
 
 ```
 .
 ├── decay.json
-├── ggH_HWW_ptH.json
-├── ggH_HZZ_ptH.json
 └── ggH_Hgg_ptH.json
 ```
 
-These files contain the parametrizations of each bin, partial and total decay width. The files ```ggH_<decay channel>_ptH.json``` refer to the gluon fusion production part (*) and contain dictionaries where the keys are the $\mu$ of the different bins. The keys in each subdictionary have the following format:
+These files contain the parametrizations of each bin, partial and total decay width. The files ```ggH_Hgg_ptH.json``` refer to the gluon fusion production part (*) and contain dictionaries where the keys are the $\mu$ of the different bins. The keys in each subdictionary have the following format:
 - ```A_<WC>```: linear term 
 - ```B_<WC>_2```: quadratic term
 - ```B_<WC1>_<WC2>```: mixed term
 
 The keys starting with "u" refer to the uncertainites of the coefficients, but they won't be used.
 
-The file ```decay.json``` is a dictionary containing only four subdictionaries: three whose keys are Hgg, HZZ and HWW, referring to the partial decay width (\*\*) and one with key ```tot``` referring to the total decay width (\*\*\*).
+The file ```decay.json``` is a dictionary containing only two subdictionaries: Hgg, referring to the partial decay width (\*\*) and ```tot``` referring to the total decay width (\*\*\*).
 
 ## Tasks
 
 All the tasks can be performed by building a $\chi^2$ structure as follows:
 
-$$\chi^2=\sum_{m=1}^{n_c}\sum_{i=1}^{n_{\mathrm{bins}}^{\mathrm{reco}, m}}\left(\frac{\mu_{i, m}^{\mathrm{obs}}-\mu_{i,m}\left(\vec{c_{r}}\right)}{\sigma_{i, m}}\right)^2$$
+$$\chi^2=\sum_{i=1}^{n_{\mathrm{bins}}^{\mathrm{reco}}}\left(\frac{\mu_{i}^{\mathrm{obs}}-\mu_{i}\left(\vec{c_{r}}\right)}{\sigma_{i}}\right)^2$$
 
 where:
 
-- $m$ runs over the decay channels;
-- $i$ runs over the bins defined for a certain decay channel;
-- $\mu^{\mathrm{obs}}_{i, m}$ is the observed (or expected!) value of $\mu$ for bin $i$ in decay channel $m$;
-- $\mu_{i, m}$ is the signal strength parametrization in bin $i$ of decay channel $m$ as function of Wilson coefficients $\vec{c_r}$;
-- $\sigma_{i, m}$ is the variance of measurements in bin $i$ of decay channel $m$.
+- $i$ runs over the bins defined in $H \rightarrow \gamma \gamma$;
+- $\mu^{\mathrm{obs}}_{i}$ is the observed (or expected!) value of $\mu$ for bin $i$;
+- $\mu_{i}$ is the signal strength parametrization in bin $i$ as function of Wilson coefficients $\vec{c_r}$;
+- $\sigma_{i}$ is the variance of measurements in bin $i$.
 
 This machinery needs to be able to perform fits on arbitrary subsets of the vector $\vec{c_r}$ (i.e., if for instance we are interested in fitting only the first element of $\vec{c_r}$, we want to be able to either **fix** the others to their SM value or let them free float). Note that you can either build one yourself or look for examples online (a similar routine is available in the [iminuit package](https://iminuit.readthedocs.io/en/stable/)).
 
@@ -148,14 +138,14 @@ Once you have this you can proceed with the tasks.
 
 ### Task 1 - M
 
-Start considering only **one decay channel**, $H \rightarrow \gamma \gamma$, and **two Wilson coefficients** $c_{HB}$ and its CP-odd counterpart $\widetilde{c}_{HB}$ (which you can find in the JSON files as ```chb``` and ```chbtil```) and the **expected** results. Perform a **scan** for each of the two Wilson coefficients, first **fixing** the other one to its SM value (0) and then allowing the other to **freely float** (procedure usually referred to as **profiling**). The results should look similar to these:
+Start considering only **two Wilson coefficients** $c_{HB}$ and its CP-odd counterpart $\widetilde{c}_{HB}$ (which you can find in the JSON files as ```chb``` and ```chbtil```) and the **expected** results. Perform a **scan** for each of the two Wilson coefficients, first **fixing** the other one to its SM value (0) and then allowing the other to **freely float** (procedure usually referred to as **profiling**). The results should look similar to these:
 
 <img src="images/chb_hgg_stamet_full_.png" alt="data_lowstat" width="300"/>
 <img src="images/chbtil_hgg_stamet_full_.png" alt="data_lowstat" width="300"/>
 
 ### Task 2 - M
 
-With the same configuration and choice of WCs, perform a **2D scan** of the two WCs. The plot should looks similar to this:
+With the same configuration and choice of WCs, perform a **2D scan** of the two WCs. The plot should look similar to this:
 
 <img src="images/chb-chbtil_hgg_stamet_full_.png" alt="data_lowstat" width="500"/>
 
@@ -171,15 +161,10 @@ Repeat the same tasks you did in 1-3, but this time fit $c_{HG}$ and its CP-odd 
 
 ### Task 5 - A
 
-From this moment on, if you built your $\chi^2$ machinery in a general enough way, you should be able to throw in the fit arbitrary amounts of WCs and cross section measurements. 
-Perform the same fits as before, but in this case include also measurements and parametrizations for the other two decay channels ($H \rightarrow ZZ$ and $H \rightarrow WW$). Do your scans change significantly?
+Now fit together all the four above-mentioned Wilson coefficients. How do your 1D scans look like? Can you manage to make them cross the horizontal line at 1 in order to obtain a 68\% CL?
 
-### Task 6 - A
+### Task 6 - A++++
 
-Now use the three decay channels provided and fit together all the four above mentioned Wilson coefficients. How do your 1D scans look like? Can you manage to make them cross the horizontal line at 1 in order to obtain a 68\% CL?
-
-### Task 7 - A++++
-
-The effect that you see in task 6 comes from the fact that the coefficients are largely correlated. In order mitigate this problem, a technique called **Principal Component Analysis** (PCA) is used in order to find the linear combinations of Wilson coefficients that are mostly constrained by data. 
+The effect that you see in task 5 comes from the fact that the coefficients are largely correlated. In order mitigate this problem, a technique called **Principal Component Analysis** (PCA) is used in order to find the linear combinations of Wilson coefficients that are mostly constrained by data. 
 
 This task is very advanced, but if you are interested in the topic and want to implement one yourself for your project ask the TA!
