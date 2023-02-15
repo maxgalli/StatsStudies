@@ -127,3 +127,59 @@ These files contain the parametrizations of each bin, partial and total decay wi
 The keys starting with "u" refer to the uncertainites of the coefficients, but they won't be used.
 
 The file ```decay.json``` is a dictionary containing only four subdictionaries: three whose keys are Hgg, HZZ and HWW, referring to the partial decay width (\*\*) and one with key ```tot``` referring to the total decay width (\*\*\*).
+
+## Tasks
+
+All the tasks can be performed by building a $\chi^2$ structure as follows:
+
+$$\chi^2=\sum_{m=1}^{n_c}\sum_{i=1}^{n_{\mathrm{bins}}^{\mathrm{reco}, m}}\left(\frac{\mu_{i, m}^{\mathrm{obs}}-\mu_{i,m}\left(\vec{c_{r}}\right)}{\sigma_{i, m}}\right)^2$$
+
+where:
+
+- $m$ runs over the decay channels;
+- $i$ runs over the bins defined for a certain decay channel;
+- $\mu^{\mathrm{obs}}_{i, m}$ is the observed (or expected!) value of $\mu$ for bin $i$ in decay channel $m$;
+- $\mu_{i, m}$ is the signal strength parametrization in bin $i$ of decay channel $m$ as function of Wilson coefficients $\vec{c_r}$;
+- $\sigma_{i, m}$ is the variance of measurements in bin $i$ of decay channel $m$.
+
+This machinery needs to be able to perform fits on arbitrary subsets of the vector $\vec{c_r}$ (i.e., if for instance we are interested in fitting only the first element of $\vec{c_r}$, we want to be able to either **fix** the others to their SM value or let them free float). Note that you can either build one yourself or look for examples online (a similar routine is available in the [iminuit package](https://iminuit.readthedocs.io/en/stable/)).
+
+Once you have this you can proceed with the tasks.
+
+### Task 1 - M
+
+Start considering only **one decay channel**, $H \rightarrow \gamma \gamma$, and **two Wilson coefficients** $c_{HB}$ and its CP-odd counterpart $\widetilde{c}_{HB}$ (which you can find in the JSON files as ```chb``` and ```chbtil```) and the **expected** results. Perform a **scan** for each of the two Wilson coefficients, first **fixing** the other one to its SM value (0) and then allowing the other to **freely float** (procedure usually referred to as **profiling**). The results should look similar to these:
+
+<img src="images/chb_hgg_stamet_full_.png" alt="data_lowstat" width="300"/>
+<img src="images/chbtil_hgg_stamet_full_.png" alt="data_lowstat" width="300"/>
+
+### Task 2 - M
+
+With the same configuration and choice of WCs, perform a **2D scan** of the two WCs. The plot should looks similar to this:
+
+<img src="images/chb-chbtil_hgg_stamet_full_.png" alt="data_lowstat" width="500"/>
+
+How does it look compared to the one in the upper right corner of page 65 of [this ATLAS paper](https://arxiv.org/pdf/2202.00487.pdf)?
+
+### Task 3 - A
+
+If you have used iminuit to perform the fits, you can perform a global fit allowing both the WCs to freely float and plot the **correlation matrix**. What can you say about the correlation between the two WCs?
+
+### Task 4 - A
+
+Repeat the same tasks you did in 1-3, but this time fit $c_{HG}$ and its CP-odd counterpart $\widetilde{c}_{HG}$, which you can find in the JSON files as ```chg``` and ```chgtil```.
+
+### Task 5 - A
+
+From this moment on, if you built your $\chi^2$ machinery in a general enough way, you should be able to throw in the fit arbitrary amounts of WCs and cross section measurements. 
+Perform the same fits as before, but in this case include also measurements and parametrizations for the other two decay channels ($H \rightarrow ZZ$ and $H \rightarrow WW$). Do your scans change significantly?
+
+### Task 6 - A
+
+Now use the three decay channels provided and fit together all the four above mentioned Wilson coefficients. How do your 1D scans look like? Can you manage to make them cross the horizontal line at 1 in order to obtain a 68\% CL?
+
+### Task 7 - A++++
+
+The effect that you see in task 6 comes from the fact that the coefficients are largely correlated. In order mitigate this problem, a technique called **Principal Component Analysis** (PCA) is used in order to find the linear combinations of Wilson coefficients that are mostly constrained by data. 
+
+This task is very advanced, but if you are interested in the topic and want to implement one yourself for your project ask the TA!
