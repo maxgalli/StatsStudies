@@ -126,6 +126,7 @@ def main():
     lumi_psi2s.floating = False
     nll = zfit.loss.ExtendedUnbinnedNLL(model, zdata)
     result = minimizer.minimize(nll)
+    print(result.params)
 
     denominator = result.loss.value().numpy()
     x = []
