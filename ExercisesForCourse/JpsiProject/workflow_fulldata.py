@@ -80,7 +80,7 @@ def main():
     x = np.linspace(2, 6, 1000)
     ax.set_xlabel("$m_{\mu\mu}$ [GeV]")
     ax.set_ylabel("Events / [{} GeV]".format((6 - 2) / n_bins))
-    ax.set_ylim(0, 80)
+    ax.set_ylim(0, 5000)
     ax.legend()
     plt.savefig("images/fulldata_Exercise1_data.png")
     ax.plot(x, data.shape[0] / n_bins * (6 - 2) * model.pdf(x), label="Model", color="red")
@@ -120,3 +120,7 @@ def main():
     fig, ax = plt.subplots()
     ax = plot_scan(arr, ax, color="black")
     plt.savefig("images/fulldata_Exercise2.png")
+
+
+if __name__ == "__main__":
+    main()
