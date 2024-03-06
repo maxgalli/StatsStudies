@@ -1,0 +1,18 @@
+name: Hgg_zfit
+channels:
+  - conda-forge
+dependencies:
+  - python<3.12
+  - jupyterlab>=2.0.0
+  - numpy>=1.18.1
+  - root
+  - uproot
+  - mplhep
+  - matplotlib
+  - pandas
+  - scikit-learn
+  - pyarrow
+  - fastparquet
+  - pip
+  - pip:
+    - zfit
